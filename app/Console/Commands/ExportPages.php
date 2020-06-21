@@ -62,11 +62,14 @@ class ExportPages extends Command
 
         $this->info('Finished scraping meta data');
 
-        $domain = str_ireplace('www.', '', parse_url( $this->argument('sitemap'), PHP_URL_HOST));
-
         $export = new SeoPageExport($pages);
 
-        return \Excel::store($export, $domain.'--'.date("Y-m-d").'.xlsx');
+        $domain = str_ireplace('www.', '', parse_url( $this->argument('sitemap'), PHP_URL_HOST));
+        $filename = $domain.'--'.date("Y-m-d").'.xlsx';
+
+        $this->info('File saved at: /storage/app/'.$filename);
+
+        return \Excel::store($export, $filename);
     }
 
     public function parseSitemapXml($sitemap)
